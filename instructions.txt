@@ -1,0 +1,42 @@
+Tesi.m contiene il codice da eseguire
+Extraction.m contiene la maggior parte delle funzioni da utilizzare
+Coding.m contiene delle funzioni per codificare una sequenza rispetto a 5 proprietà degli amino acidi
+
+La cartella variabili contiene dati pre-calcolati per non rallentare l'esecuzione
+Data.mat contiene matrici utili con dati scaricati da database online
+Nella cartella 1 ci sono le DWT degli elementi del dataset
+
+Funzioni in Extraction richiamate con Extraction.nomefunzione()
+- frec_vector(vect) --> vect è un vettore numerico. Restituisce la frequenza degli amino acidi nel vettore
+
+- pseaac(vect,p) --> vect è un vettore numerico. p è una matrice contenente le 57 proprietà degli amino acidi
+		     Restituisce un vettore di frequenze e codifica di proprietà di amino acidi
+
+Rappresentazioni
+- aac(freq,c) --> freq è matrice ricavata da frec_vector. c è una matrice con i valori di contact tra gli amino acidi
+		  Codifica le sequenze secondo il contatto tra amino acidi. Restituisce matrice
+- pssm(freq,d) --> freq è matrice ricavata da frec_vector. d è la matrice di dayhoff
+		   Applica PSSM alla sequenza e restituisce una matrice
+- physicochem(freq,p) --> freq è matrice ricavata da frec_vector. p è una matrice contenente le 57 proprietà degli amino acidi
+			  Codifica il vettore secondo le 57 proprietà fisico chimiche degli amino acidi. Restituisce una matrice
+
+Estrazioni (usano come parametri le matrici di rappresentazione)
+- discrete_wavelet(mat) --> Applica la dwt alla matrice. Restituisce un vettore
+- pseudo_alg(mat) --> Applica l'agoritmo pseudo. Restituisce un vettore
+- AvBlock(mat) --> Divide la funzione in n blocchi. Calcola la media delle colonne di ogni blocco. Concatena il vettore media di ogni
+		   blocco. Esegui l'algoritmo per n = 2...6 e concatena i vettori risultanti
+
+Analisi
+- qstatistic(savePred,truelabels) --> applica Q-statistic a tutte le coppie di classificatori. 
+				      savePred è una matrice dove in ogni colonna ci sono le predizioni del i-esimo classificatore
+				      truelabels sono le classi vere degli elementi predetti.
+
+Il programma innanzi tutto estrae gli elementi dal dataset di train. 
+Calcola la matrice di frequenze di ogni amino acido in ogni sequenza.
+Applica una 3 diversi tipi di rappresentazione alle sequenze (AAC,PSSM,PP).
+Inoltre applica alle sequenze un metodo di estrazione usando PseAAC e GM(1,1).
+Ad ogni rappresentazione trovata (non PseAAC) applico tre metodi di estrazione.
+Alla fine mi trovo 10 dataset derivati dal primo.
+Addestro indipendentemente una con l'altra 10 reti neurali su ognuno di questi dataset.
+Tramite majority vote rule ricavo la predizione finale e l'accuracy, la sensibilità, la specificità
+e il coefficiente  di  correlazione  di  Matthews.
